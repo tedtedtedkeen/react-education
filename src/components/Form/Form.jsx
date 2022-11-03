@@ -1,55 +1,70 @@
-import React, { useReducer } from "react";
-
-/* 
-  доброго ранку хлопчики и дивчины!
-  на повестке ()))))))) дня у нас некст квесченс: 
-  1) а как нам реализовать эту форму с помощью одного редьюсера
-  2) а так ли нам нужен инишиалСтейт в начале юзРедьюсера
-  3) а можно ли как-то инкапсулировать юзРедьюсер, 
-    потому что это все конечно круто,
-    но писать мелеон строчек кода каждый раз - это какой-то pizdec 
-  желаю всем продуктивного кодинха коллеги! 
-*/
-
-const FORM_ACTIONS = {
-  setName: "setName",
-  setText: "setText",
-  setRating: "setRating",
-};
-
-const reducer = (state, action) => {
-  switch (action?.type) {
-    case FORM_ACTIONS.setName:
-      return { name: action.payload.name, text: "", rating: 0 };
-    case FORM_ACTIONS.setName:
-      return {...state, text: action.payload.text };
-    case FORM_ACTIONS.setRating: 
-      return { ...state, rating: action.payload.rating };
-    default:
-      return state;
-  }
-};
+import React, { useLayoutEffect, useRef } from "react";
+import { useData } from "../../store/DataProvider";
+import { useForm } from "../../hooks/useForm";
 
 const Form = () => {
 
-  const [state, dispatch] = useReducer(reducer, []);
+  const { changeData } = useData();
+  const { FORM_ACTIONS, state, dispatch } = useForm();
+  const ref = useRef();
+
+  useLayoutEffect(() => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+    return () => {};
+  }, []);
+
+  const onNameChange = (e) => {
+    dispatch({ 
+      type: FORM_ACTIONS.SET_NAME, payload: { name: e.target.value }
+    });
+  };
+
+  const onTextChange = (e) => {
+    dispatch({ 
+      type: FORM_ACTIONS.SET_TEXT, payload: { text: e.target.value }
+    });
+  };
+
+  const onRatingChange = (e) => {
+    dispatch({ 
+      type: FORM_ACTIONS.SET_RATING, payload: { rating: e.target.value }
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    changeData(state);
+    dispatch({
+      type: FORM_ACTIONS.SET_NAME, payload: { name: "" }
+    });
+  };
 
   return (
-    <form>
-      <input 
+    <form onSubmit={handleSubmit}>
+      <input
+        ref={ref}
         type="text"
-        // value={}
-        // onChange={} 
+        value={state.name}
+        onChange={onNameChange} 
+        placeholder="name"
+      />
+      <textarea
+        value={state.text}
+        onChange={onTextChange}
+        placeholder="text" 
       />
       <input 
-        type="text"
-        // value={}
-        // onChange={} 
+        type="number"
+        max={5}
+        placeholder={"Number"}
+        value={state.rating}
+        onChange={onRatingChange}
       />
-      <input 
-        type="checkbox"
-      />
-      <button>Send</button>
+      <button>
+        Send
+      </button>
     </form>
   );
 };

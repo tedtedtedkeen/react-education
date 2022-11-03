@@ -5,11 +5,22 @@
   box-sizing: border-box;
 }
 
-
-.active {
-  background-color: green;
+:root {
+  --active: #FD7FC8;
+  --black: #000;
+  --green: #29636f;
+  --dirtyPurple: #464b5e;
+  --lightPurple: #6a4f6d;
+  --darkPurple: #3f084d;
 }
 
-.disabled {
-  background-color: red;
+body {
+  margin-bottom: 200px;
+  margin: 0px auto;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
