@@ -32,7 +32,7 @@ function reducer(todos, action) {
         return todo.id === action.payload.id ? {...todo, completed: !todo.completed} : todo;
       });
     default:
-      throw new Error();
+      return todos;
   }
 }
 

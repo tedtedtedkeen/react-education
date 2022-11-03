@@ -1,0 +1,34 @@
+
+
+
+.form {
+  display: inline-flex;
+  flex-direction: column;
+  row-gap: 16px;
+  input {
+    padding: 12px;
+    font-size: 18px;
+    ::placeholder {
+      color: var(--grey200);
+    }
+    border-radius: 4px;
+  }
+  .button {
+    padding: 12px 0px;
+    border-radius: 4px;
+    color: var(--darkBlack);
+    background-color: var(--grey100);
+    font-size: 20px;
+    transition: 0.2s ease all;
+  }
+  .button:hover {
+    background-color: var(--grey200);
+  }
+  .button:active {
+    background-color: var(--grey300);
+  }
+  .button:disabled {
+    background-color: var(--grey100);
+    opacity: 0.4;
+  } 
+}
