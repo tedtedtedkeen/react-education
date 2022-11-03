@@ -1,55 +1,67 @@
 import React, { useReducer } from "react";
+import { useProvider } from "../../store/DataProvider";
+import styles from "./Form.module.scss";
+import { useForm } from "../../hooks/useForm";
 
-/* 
-  доброго ранку хлопчики и дивчины!
-  на повестке ()))))))) дня у нас некст квесченс: 
-  1) а как нам реализовать эту форму с помощью одного редьюсера
-  2) а так ли нам нужен инишиалСтейт в начале юзРедьюсера
-  3) а можно ли как-то инкапсулировать юзРедьюсер, 
-    потому что это все конечно круто,
-    но писать мелеон строчек кода каждый раз - это какой-то pizdec 
-  желаю всем продуктивного кодинха коллеги! 
-*/
+const { FORM_ACTIONS, reducer } = useForm();
 
-const FORM_ACTIONS = {
-  setName: "setName",
-  setText: "setText",
-  setRating: "setRating",
-};
-
-const reducer = (state, action) => {
-  switch (action?.type) {
-    case FORM_ACTIONS.setName:
-      return { name: action.payload.name, text: "", rating: 0 };
-    case FORM_ACTIONS.setName:
-      return {...state, text: action.payload.text };
-    case FORM_ACTIONS.setRating: 
-      return { ...state, rating: action.payload.rating };
-    default:
-      return state;
-  }
+const initial = {
+  name: "",
+  text: "",
+  rating: 0,
 };
 
 const Form = () => {
+  const [state, dispatch] = useReducer(reducer, initial);
+  const { setData } = useProvider();
 
-  const [state, dispatch] = useReducer(reducer, []);
+  const onNameChange = (e) => dispatch({
+    type: FORM_ACTIONS.SET_NAME, payload: { name: e.target.value }
+  });
+
+  const onTextChange = (e) => dispatch({
+    type: FORM_ACTIONS.SET_TEXT, payload: { text: e.target.value }
+  });
+
+  const onRatingChange = (e) => dispatch({
+    type: FORM_ACTIONS.SET_RATING, payload: { rating: e.target.value }
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setData((prev) => [...prev, { name: state.name, text: state.text, rating: state.rating, id: Date.now() }]);
+    dispatch({ type: FORM_ACTIONS.SET_NAME, payload: { name: "" } }); 
+  };
 
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit}
+      className={styles.form}
+    >
+      <input
+        type="text"
+        value={state.name}
+        onChange={onNameChange}
+        placeholder="Name"
+      />
       <input 
         type="text"
-        // value={}
-        // onChange={} 
+        value={state.text}
+        onChange={onTextChange}
+        placeholder="Some text" 
       />
       <input 
-        type="text"
-        // value={}
-        // onChange={} 
+        type="number"
+        value={state.rating}
+        onChange={onRatingChange}
       />
-      <input 
-        type="checkbox"
-      />
-      <button>Send</button>
+      <button
+        className={styles.button}
+        onKeyPress={handleSubmit}
+        disabled={!state.name}
+      >
+        Send
+      </button>
     </form>
   );
 };
