@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 const DataContext = createContext();
 export const useData = () => useContext(DataContext);
@@ -15,7 +15,7 @@ export const DataProvider = ({
 
   const changeData = (state) => {
     setData(prev => [...prev, {...state}]);
-  }
+  };
 
   return (
     <DataContext.Provider value={{ data, changeData, deleteItem }}>

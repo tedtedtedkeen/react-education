@@ -1,0 +1,1 @@
+{"version":3,"file":"secondary.bundle.js","mappings":"sIAEAA,QAAQC,IAAIC,IAAAA,KAAO,CAAC,YAAa,KAAM,UAAW,K","sources":["webpack://react-education/./src/secondary.js"],"sourcesContent":["import _ from \"lodash\";\r\n\r\nconsole.log(_.join([\"Secondary\", \"is\", \"loaded\"], \" \"));"],"names":["console","log","_"],"sourceRoot":""}

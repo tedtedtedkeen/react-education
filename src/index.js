@@ -3,6 +3,9 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import "./index.scss";
 import { DataProvider } from "./store/DataProvider";
+import _ from "lodash";
+
+console.log(_.join(["Index", "is", "loaded"], " "));
 
 const container = document.getElementById("root");
 const root = createRoot(container);

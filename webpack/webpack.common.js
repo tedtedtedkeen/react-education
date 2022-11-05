@@ -4,12 +4,19 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
-    main: path.resolve(__dirname, "../src/index.js"),
+    index: { import: "./src/index.js", dependOn: "shared" },
+    secondary: { import: "./src/secondary.js", dependOn: "shared" },
+    shared: "lodash",
   },
   output: {
-    path: path.resolve(__dirname, "../build"),
-    filename: "./bundle.js",
+    path: path.resolve(__dirname, "build"),
+    filename: "[name].bundle.js",
     publicPath: "/",
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
